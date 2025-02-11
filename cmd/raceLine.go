@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -64,5 +65,13 @@ func ListRace() error {
 		return nil
 	}
 
+	var RaceInfo []RaceInfo
+
+	err = json.NewDecoder(file).Decode(&RaceInfo)
+	if err != nil {
+		return fmt.Errorf("failed to Decode file: %v", err)
+	}
+
+	
 	return nil
 }
