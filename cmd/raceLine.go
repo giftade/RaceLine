@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"github.com/olekukonko/tablewriter"
 )
 
 type RaceInfo struct {
@@ -14,14 +15,14 @@ type RaceInfo struct {
 
 type Race struct {
 	Round    int     `json:"round"`
-	RaceName string  `json:"raceName"`
+	Name string  `json:"name"`
 	Circuit  Circuit `json:"circuit"`
 	Date     string  `json:"date"`
 	Time     string  `json:"time"`
 }
 
 type Circuit struct {
-	CircuitName string   `json:"circuitName"`
+	Name string   `json:"name"`
 	Location    Location `json:"location"`
 }
 
@@ -37,7 +38,7 @@ type Standings struct {
 
 type Drivers struct {
 	Position   int    `json:"position"`
-	DriverName string `json:"driverName"`
+	Name string `json:"name"`
 	Team       string `json:"team"`
 	Points     int    `json:"points"`
 }
@@ -71,7 +72,30 @@ func ListRace() error {
 	if err != nil {
 		return fmt.Errorf("failed to Decode file: %v", err)
 	}
-
-	
+	printRaceSchedule(RaceInfo)
 	return nil
+}
+
+func printRaceSchedule(RaceInfo []RaceInfo) {
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"Round", "Race Name", "Circuit", "Country", "City", "Date", "Time"})
+
+	for _, season := range RaceInfo {
+		fmt.Println("Season:", season.Season)
+
+		for _, race := range season.Races {
+			table.Append([]string{
+				fmt.Sprintf("%d", race.Round),
+				race.Name,
+				race.Circuit.Name,
+				race.Circuit.Location.Country,
+				race.Circuit.Location.City,
+				race.Date,
+				race.Time,
+			})
+		}
+
+		table.Render() // Print the table
+		fmt.Println()
+	}
 }
