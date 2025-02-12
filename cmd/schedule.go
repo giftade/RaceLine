@@ -10,7 +10,7 @@ var scheduleCmd = &cobra.Command{
 	Short: "Lists the full season race schedule",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		ListRace()
+		schedule()
 	},
 }
 

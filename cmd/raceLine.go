@@ -49,7 +49,7 @@ type Constructors struct {
 	Points   int    `json:"points"`
 }
 
-func ListRace() error {
+func schedule() error {
 	file, err := os.OpenFile("assets/mock.json", os.O_RDWR, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to open file: %v", err)
