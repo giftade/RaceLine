@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -14,16 +15,16 @@ type RaceInfo struct {
 }
 
 type Race struct {
-	Round    int     `json:"round"`
-	Name string  `json:"name"`
-	Circuit  Circuit `json:"circuit"`
-	Date     string  `json:"date"`
-	Time     string  `json:"time"`
+	Round   int     `json:"round"`
+	Name    string  `json:"name"`
+	Circuit Circuit `json:"circuit"`
+	Date    string  `json:"date"`
+	Time    string  `json:"time"`
 }
 
 type Circuit struct {
-	Name string   `json:"name"`
-	Location    Location `json:"location"`
+	Name     string   `json:"name"`
+	Location Location `json:"location"`
 }
 
 type Location struct {
@@ -37,10 +38,10 @@ type Standings struct {
 }
 
 type Drivers struct {
-	Position   int    `json:"position"`
-	Name string `json:"name"`
-	Team       string `json:"team"`
-	Points     int    `json:"points"`
+	Position int    `json:"position"`
+	Name     string `json:"name"`
+	Team     string `json:"team"`
+	Points   int    `json:"points"`
 }
 
 type Constructors struct {
@@ -50,27 +51,19 @@ type Constructors struct {
 }
 
 func schedule() error {
-	file, err := os.OpenFile("assets/mock.json", os.O_RDWR, 0644)
+	file, err := openFile("assets/mock.json")
 	if err != nil {
-		return fmt.Errorf("failed to open file: %v", err)
+		fmt.Println(err)
+		return err
 	}
 	defer file.Close()
-
-	fileStat, err := file.Stat()
-	if err != nil {
-		return fmt.Errorf("failed to get file stats: %v", err)
-	}
-
-	if fileStat.Size() <= 0 {
-		fmt.Println("No race data")
-		return nil
-	}
 
 	var RaceInfo []RaceInfo
 
 	err = json.NewDecoder(file).Decode(&RaceInfo)
 	if err != nil {
-		return fmt.Errorf("failed to Decode file: %v", err)
+		fmt.Printf("failed to Decode file: %v", err)
+		return err
 	}
 	printRaceSchedule(RaceInfo)
 	return nil
