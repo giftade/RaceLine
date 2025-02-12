@@ -7,7 +7,7 @@ import (
 // ListRacesCmd represents the ListRace command
 var ListRacesCmd = &cobra.Command{
 	Use:     "List Races",
-	Aliases: []string{"list"},
+	Aliases: []string{"schedule"},
 	Short:   "List all Races",
 	Long:    ``,
 	Run: func(cmd *cobra.Command, args []string) {
